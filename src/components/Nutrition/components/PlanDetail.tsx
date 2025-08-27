@@ -70,7 +70,7 @@ export const PlanDetail = () => {
                     </Collapse>
                 </>}
 
-                <NutritionalValuesTable values={plan.plannedNutritionalValues} />
+                <NutritionalValuesTable values={plan.plannedNutritionalValues} showPrecisionToggle={true} />
 
                 {plan.hasAnyPlanned &&
                     <MacrosPieChart data={plan.plannedNutritionalValues} />
@@ -86,6 +86,7 @@ export const PlanDetail = () => {
                 />
                 <NutritionalValuesTable
                     values={plan.loggedNutritionalValuesToday}
+                    showPrecisionToggle={true}
                 />
                 <DiaryOverview
                     planId={plan.id!}
