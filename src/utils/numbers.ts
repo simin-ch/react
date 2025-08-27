@@ -25,8 +25,18 @@ export function numberUnitLocale(num: number, locale: string, unit: LocaleUnit) 
     );
 }
 
-export function numberGramLocale(num: number, locale: string) {
-    return numberUnitLocale(num, locale, LocaleUnit.GRAM);
+export function numberGramLocale(num: number, locale: string, precision: number = 0) {
+    return numberConfigurable(num, locale, precision);
+}
+
+// Function for numbers with configurable precision
+export function numberConfigurable(num: number, locale: string, precision: number = 0) {
+    return num.toLocaleString(locale, {
+        maximumFractionDigits: precision,
+        minimumFractionDigits: precision,
+        unit: 'gram',
+        style: 'unit'
+    });
 }
 
 export function numberPercentLocale(num: number, locale: string) {
