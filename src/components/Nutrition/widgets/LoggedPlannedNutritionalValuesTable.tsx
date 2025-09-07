@@ -1,32 +1,17 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Box, IconButton, Tooltip } from "@mui/material";
-import { ToggleOff, ToggleOn } from "@mui/icons-material";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Box } from "@mui/material";
 import { NutritionalValues } from "components/Nutrition/helpers/nutritionalValues";
 import { useTranslation } from "react-i18next";
 import { numberGramLocale, numberLocale } from "utils/numbers";
-import { useState } from "react";
+import { useNutritionPrecision } from "../context/NutritionPrecisionContext";
 
 export const LoggedPlannedNutritionalValuesTable = (props: {
     planned: NutritionalValues,
     logged: NutritionalValues,
-    showPrecisionToggle?: boolean
 }) => {
     const [t, i18n] = useTranslation();
-    const [precision, setPrecision] = useState(0);
-
-    const togglePrecision = () => {
-        setPrecision(precision === 0 ? 1 : 0);
-    };
+    const { precision } = useNutritionPrecision();
 
     return <Box>
-        {props.showPrecisionToggle && (
-            <Box display="flex" justifyContent="flex-end" mb={1}>
-                <Tooltip title={precision === 0 ? "Show decimal places" : "Show whole numbers"}>
-                    <IconButton onClick={togglePrecision} size="small">
-                        {precision === 0 ? <ToggleOff /> : <ToggleOn />}
-                    </IconButton>
-                </Tooltip>
-            </Box>
-        )}
         <TableContainer>
             <Table size="small">
                 <TableHead>
