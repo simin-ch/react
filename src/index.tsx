@@ -8,6 +8,7 @@ import { NutritionCard } from "components/Dashboard/NutritionCard";
 import { RoutineCard } from "components/Dashboard/RoutineCard";
 import { WeightCard } from "components/Dashboard/WeightCard";
 import { IngredientSearch } from "components/Nutrition/components/IngredientSearch";
+import { NutritionPrecisionProvider } from "components/Nutrition/context/NutritionPrecisionContext";
 import React, { Suspense } from 'react';
 import { createRoot } from "react-dom/client";
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -73,7 +74,9 @@ const renderComponentShadowDom = (divId: string) => {
                 <Router>
                     <ThemeProvider theme={makeTheme(shadowRoot)}>
                         <QueryClientProvider client={queryClient}>
-                            <WgerRoutes />
+                            <NutritionPrecisionProvider>
+                                <WgerRoutes />
+                            </NutritionPrecisionProvider>
                         </QueryClientProvider>
                     </ThemeProvider>
                 </Router>
@@ -91,8 +94,10 @@ if (rootElement) {
                 <Router>
                     <ThemeProvider theme={theme}>
                         <QueryClientProvider client={queryClient}>
-                            <App />
-                            <ReactQueryDevtools />
+                            <NutritionPrecisionProvider>
+                                <App />
+                                <ReactQueryDevtools />
+                            </NutritionPrecisionProvider>
                         </QueryClientProvider>
                     </ThemeProvider>
                 </Router>
@@ -110,7 +115,9 @@ if (rootNoShadowDom) {
             <Router>
                 <ThemeProvider theme={theme}>
                     <QueryClientProvider client={queryClient}>
-                        <WgerRoutes />
+                        <NutritionPrecisionProvider>
+                            <WgerRoutes />
+                        </NutritionPrecisionProvider>
                     </QueryClientProvider>
                 </ThemeProvider>
             </Router>
@@ -144,7 +151,9 @@ if (nutritionDashboard) {
         <Suspense fallback={<LoadingWidget />}>
             <ThemeProvider theme={theme}>
                 <QueryClientProvider client={queryClient}>
-                    <NutritionCard />
+                    <NutritionPrecisionProvider>
+                        <NutritionCard />
+                    </NutritionPrecisionProvider>
                 </QueryClientProvider>
             </ThemeProvider>
         </Suspense>
@@ -172,7 +181,9 @@ if (ingredientSearchBox) {
     root.render(
         <Suspense fallback={<LoadingWidget />}>
             <ThemeProvider theme={theme}>
-                <IngredientSearch />
+                <NutritionPrecisionProvider>
+                    <IngredientSearch />
+                </NutritionPrecisionProvider>
             </ThemeProvider>
         </Suspense>
     );
