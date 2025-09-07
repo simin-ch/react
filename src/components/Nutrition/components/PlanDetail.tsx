@@ -79,11 +79,16 @@ export const PlanDetail = () => {
                     <Typography gutterBottom variant="h4">
                         {t('nutrition.planned')}
                     </Typography>
-                    <Tooltip title={precision === 0 ? "Show decimal places" : "Show whole numbers"}>
-                        <IconButton onClick={togglePrecision} size="small">
-                            {precision === 0 ? <ToggleOff /> : <ToggleOn />}
-                        </IconButton>
-                    </Tooltip>
+                    <Box display="flex" alignItems="center" gap={1}>
+                        <Typography variant="body2" color="text.secondary">
+                            {precision === 0 ? "Whole numbers" : "One decimal"}
+                        </Typography>
+                        <Tooltip title={precision === 0 ? "Show one decimal places" : "Show whole numbers"}>
+                            <IconButton onClick={togglePrecision} size="small">
+                                {precision === 0 ? <ToggleOff /> : <ToggleOn />}
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
                 </Box>
                 
                 <NutritionalValuesTable values={plan.plannedNutritionalValues} />
