@@ -1,5 +1,5 @@
-import { Add } from "@mui/icons-material";
-import { Collapse, IconButton, Stack, Typography } from "@mui/material";
+import { Add, ToggleOff, ToggleOn } from "@mui/icons-material";
+import { Collapse, IconButton, Stack, Typography, Box } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import { LoadingPlaceholder } from "components/Core/LoadingWidget/LoadingWidget";
 import { WgerContainerRightSidebar } from "components/Core/Widgets/Container";
@@ -13,6 +13,7 @@ import { MealDetail } from "components/Nutrition/widgets/MealDetail";
 import { NutritionalValuesTable } from "components/Nutrition/widgets/NutritionalValuesTable";
 import { PlanDetailDropdown } from "components/Nutrition/widgets/PlanDetailDropdown";
 import { PlanSidebar } from "components/Nutrition/widgets/PlanSidebar";
+import { useNutritionPrecision } from "../context/NutritionPrecisionContext";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
@@ -31,6 +32,9 @@ export const PlanDetail = () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [expandedForm, setExpandedForm] = useState(false);
     const handleToggleExpandedForm = () => setExpandedForm(!expandedForm);
+    
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { precision, togglePrecision } = useNutritionPrecision();
 
     const plan = planQuery.data!;
 
@@ -70,7 +74,19 @@ export const PlanDetail = () => {
                     </Collapse>
                 </>}
 
-                <NutritionalValuesTable values={plan.plannedNutritionalValues} showPrecisionToggle={true} />
+                {/* Global precision toggle for all nutrition tables */}
+                <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                    <Typography gutterBottom variant="h4">
+                        {t('nutrition.planned')}
+                    </Typography>
+                    <Tooltip title={precision === 0 ? "Show decimal places" : "Show whole numbers"}>
+                        <IconButton onClick={togglePrecision} size="small">
+                            {precision === 0 ? <ToggleOff /> : <ToggleOn />}
+                        </IconButton>
+                    </Tooltip>
+                </Box>
+                
+                <NutritionalValuesTable values={plan.plannedNutritionalValues} />
 
                 {plan.hasAnyPlanned &&
                     <MacrosPieChart data={plan.plannedNutritionalValues} />
@@ -86,7 +102,6 @@ export const PlanDetail = () => {
                 />
                 <NutritionalValuesTable
                     values={plan.loggedNutritionalValuesToday}
-                    showPrecisionToggle={true}
                 />
                 <DiaryOverview
                     planId={plan.id!}
