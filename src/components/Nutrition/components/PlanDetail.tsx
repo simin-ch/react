@@ -1,4 +1,4 @@
-import { Add, ToggleOff, ToggleOn } from "@mui/icons-material";
+import { Add } from "@mui/icons-material";
 import { Collapse, IconButton, Stack, Typography, Box } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import { LoadingPlaceholder } from "components/Core/LoadingWidget/LoadingWidget";
@@ -13,7 +13,7 @@ import { MealDetail } from "components/Nutrition/widgets/MealDetail";
 import { NutritionalValuesTable } from "components/Nutrition/widgets/NutritionalValuesTable";
 import { PlanDetailDropdown } from "components/Nutrition/widgets/PlanDetailDropdown";
 import { PlanSidebar } from "components/Nutrition/widgets/PlanSidebar";
-import { useNutritionPrecision } from "../context/NutritionPrecisionContext";
+import { PrecisionToggleButton } from "components/Nutrition/widgets/PrecisionToggleButton";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
@@ -33,8 +33,6 @@ export const PlanDetail = () => {
     const [expandedForm, setExpandedForm] = useState(false);
     const handleToggleExpandedForm = () => setExpandedForm(!expandedForm);
     
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { precision, togglePrecision } = useNutritionPrecision();
 
     const plan = planQuery.data!;
 
@@ -44,7 +42,12 @@ export const PlanDetail = () => {
 
     return <WgerContainerRightSidebar
         title={plan.description}
-        optionsMenu={<PlanDetailDropdown plan={plan} />}
+        optionsMenu={
+            <Box display="flex" alignItems="center" gap={2}>
+                <PrecisionToggleButton />
+                <PlanDetailDropdown plan={plan} />
+            </Box>
+        }
         mainContent={<>
             <Stack spacing={2}>
                 {/*<Typography gutterBottom variant="h4">*/}
@@ -74,22 +77,9 @@ export const PlanDetail = () => {
                     </Collapse>
                 </>}
 
-                {/* Global precision toggle for all nutrition tables */}
-                <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                    <Typography gutterBottom variant="h4">
-                        {t('nutrition.planned')}
-                    </Typography>
-                    <Box display="flex" alignItems="center" gap={1}>
-                        <Typography variant="body2" color="text.secondary">
-                            {precision === 0 ? "Whole numbers" : "One decimal"}
-                        </Typography>
-                        <Tooltip title={precision === 0 ? "Show one decimal places" : "Show whole numbers"}>
-                            <IconButton onClick={togglePrecision} size="small">
-                                {precision === 0 ? <ToggleOff /> : <ToggleOn />}
-                            </IconButton>
-                        </Tooltip>
-                    </Box>
-                </Box>
+                <Typography gutterBottom variant="h4">
+                    {t('nutrition.planned')}
+                </Typography>
                 
                 <NutritionalValuesTable values={plan.plannedNutritionalValues} />
 
