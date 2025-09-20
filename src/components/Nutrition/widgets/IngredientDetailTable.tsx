@@ -3,11 +3,13 @@ import { Avatar, Table, TableBody, TableCell, TableContainer, TableHead, TableRo
 import { NutritionalValues } from "components/Nutrition/helpers/nutritionalValues";
 import { DiaryEntry } from "components/Nutrition/models/diaryEntry";
 import { MealItem } from "components/Nutrition/models/mealItem";
+import { useNutritionPrecision } from "../context/NutritionPrecisionContext";
 import { useTranslation } from "react-i18next";
-import { numberGramLocale, numberLocale } from "utils/numbers";
+import { numberLocale, numberGramLocale, numberConfigurable } from "utils/numbers";
 
 const IngredientTableRow = (props: { item: MealItem | DiaryEntry }) => {
     const [t, i18n] = useTranslation();
+    const { precision } = useNutritionPrecision();
 
     return <TableRow key={props.item.id}>
         <TableCell sx={{ paddingX: 1 }}>
@@ -30,13 +32,13 @@ const IngredientTableRow = (props: { item: MealItem | DiaryEntry }) => {
             })}
         </TableCell>
         <TableCell align="right" sx={{ paddingX: 1 }}>
-            {numberGramLocale(props.item.nutritionalValues.protein, i18n.language)}
+            {numberGramLocale(props.item.nutritionalValues.protein, i18n.language, precision)}
         </TableCell>
         <TableCell align="right" sx={{ paddingX: 1 }}>
-            {numberGramLocale(props.item.nutritionalValues.carbohydrates, i18n.language)}
+            {numberGramLocale(props.item.nutritionalValues.carbohydrates, i18n.language, precision)}
         </TableCell>
         <TableCell align="right" sx={{ paddingX: 1 }}>
-            {numberGramLocale(props.item.nutritionalValues.fat, i18n.language)}
+            {numberGramLocale(props.item.nutritionalValues.fat, i18n.language, precision)}
         </TableCell>
     </TableRow>;
 };
@@ -47,6 +49,7 @@ export const IngredientDetailTable = (props: {
     showSum: boolean
 }) => {
     const [t, i18n] = useTranslation();
+    const { precision } = useNutritionPrecision();
 
     return <TableContainer>
         <Table>
@@ -76,13 +79,13 @@ export const IngredientDetailTable = (props: {
                         })}
                     </TableCell>
                     <TableCell align={'right'} sx={{ paddingX: 1 }}>
-                        {numberGramLocale(props.values.protein, i18n.language)}
+                        {numberGramLocale(props.values.protein, i18n.language, precision)}
                     </TableCell>
                     <TableCell align={'right'} sx={{ paddingX: 1 }}>
-                        {numberGramLocale(props.values.carbohydrates, i18n.language)}
+                        {numberGramLocale(props.values.carbohydrates, i18n.language, precision)}
                     </TableCell>
                     <TableCell align={'right'} sx={{ paddingX: 1 }}>
-                        {numberGramLocale(props.values.fat, i18n.language)}
+                        {numberGramLocale(props.values.fat, i18n.language, precision)}
                     </TableCell>
                 </TableRow>}
             </TableBody>
